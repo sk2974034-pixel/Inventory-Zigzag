@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dell Inventory Management System</title>
+    <meta name="description" content="A professional Dell E-Commerce Inventory Management System for tracking Dell laptops and accessories.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
 
+    <div class="background-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+    </div>
+
+    <div class="main-container">
+        <header>
+            <div class="logo">
+                <span class="dell-text">DELL</span>
+                <span class="inventory-badge">Inventory</span>
+            </div>
+            <h1>Dell Inventory Management System</h1>
+            <p class="subtitle">Efficiently manage and track your Dell product stock.</p>
+        </header>
+
+        <div class="action-card">
+            <div class="input-group">
+                <label for="productInput">Product Name</label>
+                <input type="text" id="productInput" placeholder="e.g., Dell XPS 15 Laptop" autocomplete="off">
+            </div>
+
+            <div class="button-grid">
+                <button class="btn btn-add" onclick="addProduct()">
+                    <span class="icon">➕</span> Add Product
+                </button>
+                <button class="btn btn-remove" onclick="removeProduct()">
+                    <span class="icon">🗑️</span> Remove Product
+                </button>
+                <button class="btn btn-check" onclick="checkProduct()">
+                    <span class="icon">🔍</span> Check Availability
+                </button>
+            </div>
+
+            <div id="messageBox" class="message-box"></div>
+        </div>
+
+        <section class="inventory-section">
+            <div class="section-header">
+                <h2>Product Catalog</h2>
+                <span id="productCount" class="count-badge">0 Products</span>
+            </div>
+            <div class="list-wrapper">
+                <ul id="inventoryList">
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Dell E-Commerce Mini Project. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
