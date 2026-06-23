@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zigzag Conversion - Interactive</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result-box {
+            background-color: #f0f4ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin-top: 30px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .result-value {
+            color: #667eea;
+            font-size: 18px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #ffebee;
+            border-left-color: #f44336;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Zigzag Conversion Tool</h1>
+        
+        <div class="input-group">
+            <label for="inputString">Enter String:</label>
+            <input type="text" id="inputString" placeholder="e.g., PAYPALISHIRING" value="PAYPALISHIRING">
+        </div>
+
+        <div class="input-group">
+            <label for="numRows">Number of Rows:</label>
+            <input type="number" id="numRows" placeholder="e.g., 3" value="3" min="1">
+        </div>
+
+        <button onclick="runConversion()">Run Conversion</button>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-label">Output (Zigzag Converted):</div>
+            <div class="result-value" id="outputValue"></div>
+        </div>
+    </div>
+
+    <script>
+        function convert(s, numRows) {
+            // Edge case: If there is only 1 row, or the string is shorter than the rows,
+            // the zigzag pattern remains the same as the original string.
+            if (numRows === 1 || s.length <= numRows) {
+                return s;
+            }
+
+            // Create an array of empty strings to represent each row
+            const rows = Array.from({ length: Math.min(numRows, s.length) }, () => "");
+            
+            let currentRow = 0;
+            let goingDown = false;
+
+            // Traverse the string character by character
+            for (const char of s) {
+                rows[currentRow] += char;
+
+                // Switch direction if we hit the top row (0) or bottom row (numRows - 1)
+                if (currentRow === 0 || currentRow === numRows - 1) {
+                    goingDown = !goingDown;
+                }
+
+                // Move to the next row
+                currentRow += goingDown ? 1 : -1;
+            }
+
+            // Join all the row strings together to get the final result
+            return rows.join("");
+        }
+
+        function runConversion() {
+            const inputString = document.getElementById('inputString').value;
+            const numRows = parseInt(document.getElementById('numRows').value);
+            const resultBox = document.getElementById('resultBox');
+            const outputValue = document.getElementById('outputValue');
+
+            // Validation
+            if (!inputString.trim()) {
+                outputValue.textContent = 'Please enter a string!';
+                resultBox.classList.add('error');
+                resultBox.classList.add('show');
+                return;
+            }
+
+            if (isNaN(numRows) || numRows < 1) {
+                outputValue.textContent = 'Please enter a valid number of rows (at least 1)!';
+                resultBox.classList.add('error');
+                resultBox.classList.add('show');
+                return;
+            }
+
+            // Run conversion
+            try {
+                const result = convert(inputString, numRows);
+                outputValue.textContent = result;
+                resultBox.classList.remove('error');
+                resultBox.classList.add('show');
+            } catch (error) {
+                outputValue.textContent = 'Error: ' + error.message;
+                resultBox.classList.add('error');
+                resultBox.classList.add('show');
+            }
+        }
+
+        // Allow Enter key to run conversion
+        document.getElementById('inputString').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') runConversion();
+        });
+
+        document.getElementById('numRows').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') runConversion();
+        });
+    </script>
+</body>
+</html>
